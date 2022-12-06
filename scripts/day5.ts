@@ -56,7 +56,7 @@ const moves: Move[] = moveInputs
     return acc;
   }, []);
 
-const moveCrates = ({
+const moveCratesPart1 = ({
   count,
   from,
   dest,
@@ -79,9 +79,31 @@ const moveCrates = ({
   return cratesCopy;
 };
 
+const moveCratesPart2 = ({
+  count,
+  from,
+  dest,
+  crates,
+}: {
+  count: number;
+  from: number;
+  dest: number;
+  crates: string[][];
+}): string[][] => {
+  const cratesCopy = [...crates];
+  const fromI = from - 1;
+  const destI = dest - 1;
+  const spliceStart = cratesCopy[fromI].length - count;
+  const cratesToMove = cratesCopy[fromI].splice(spliceStart, count);
+
+  cratesToMove.forEach((crate) => cratesCopy[destI].push(crate));
+
+  return cratesCopy;
+};
+
 const movedCrates = moves.reduce(
   (acc, { count, dest, from }) => {
-    const newCrates = moveCrates({ count, dest, from, crates: acc });
+    const newCrates = moveCratesPart2({ count, dest, from, crates: acc });
 
     return newCrates;
   },
