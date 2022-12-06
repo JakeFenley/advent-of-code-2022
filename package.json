@@ -8,7 +8,8 @@
     "day2": "ts-node scripts/day2-pt2.ts",
     "day3": "ts-node scripts/day3-pt2.ts",
     "day4": "ts-node scripts/day4.ts",
-    "day5": "ts-node scripts/day5.ts"
+    "day5": "ts-node scripts/day5.ts",
+    "day6": "ts-node scripts/day6.ts"
   },
   "keywords": [],
   "author": "",
