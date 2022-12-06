@@ -19,31 +19,26 @@ const reset = (char: string) => {
       break;
     }
   }
-  
-  chars = newChars;
-};
 
-const addChar = (char: string) => {
-  chars.push(char);
+  chars = newChars;
 };
 
 const getMarker = (characterAmt: number) => {
   for (let i = 0; i < inputs.length; i++) {
     const marker = i + 1;
     const char = inputs[i];
-  
+
     if (chars.length === characterAmt - 1 && !chars.includes(char)) {
       return marker;
     }
-  
+
     if (!chars.includes(char)) {
-      addChar(char);
+      chars.push(char);
     } else {
       reset(char);
     }
   }
-}
-
+};
 
 console.log(getMarker(4));
 console.log(getMarker(14));
