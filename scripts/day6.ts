@@ -27,29 +27,12 @@ const addChar = (char: string) => {
   chars.push(char);
 };
 
-const getMarkerPt1 = () => {
+const getMarker = (characterAmt: number) => {
   for (let i = 0; i < inputs.length; i++) {
     const marker = i + 1;
     const char = inputs[i];
   
-    if (chars.length === 3 && !chars.includes(char)) {
-      return marker;
-    }
-  
-    if (!chars.includes(char)) {
-      addChar(char);
-    } else {
-      reset(char);
-    }
-  }
-}
-
-const getMarkerPt2 = () => {
-  for (let i = 0; i < inputs.length; i++) {
-    const marker = i + 1;
-    const char = inputs[i];
-  
-    if (chars.length === 13 && !chars.includes(char)) {
+    if (chars.length === characterAmt - 1 && !chars.includes(char)) {
       return marker;
     }
   
@@ -62,5 +45,5 @@ const getMarkerPt2 = () => {
 }
 
 
-
-console.log(getMarkerPt2());
+console.log(getMarker(4));
+console.log(getMarker(14));
