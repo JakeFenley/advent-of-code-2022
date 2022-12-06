@@ -5,7 +5,6 @@ const inputs = fs
   .readFileSync(path.join(__dirname, '../inputs/day6.md'), 'utf-8')
   .split('');
 
-let count = 0;
 let chars: string[] = [];
 
 const reset = (char: string) => {
