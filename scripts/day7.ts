@@ -1,6 +1,10 @@
 import * as fs from 'fs';
 import path from 'path';
 
+// const inputs = fs
+//   .readFileSync(path.join(__dirname, '../inputs/day7-small-sample.md'), 'utf-8')
+//   .split('\n');
+
 const inputs = fs
   .readFileSync(path.join(__dirname, '../inputs/day7.md'), 'utf-8')
   .split('\n');
@@ -8,7 +12,6 @@ const inputs = fs
 interface File {
   name: string;
   size: number;
-  ext?: string;
 }
 
 interface Directory {
@@ -85,7 +88,7 @@ const recursivelyAddFileSize = (dir: Directory, sizeToAdd: number) => {
 };
 
 const handleOutput = (output: string) => {
-  const fileRegex = /(\d*) ([a-zA-Z]+).?([a-zA-Z]*)?/;
+  const fileRegex = /(\d*) (.*)/;
 
   if (output.startsWith('dir')) {
     const dirname = output.split('dir ')[1];
@@ -97,15 +100,12 @@ const handleOutput = (output: string) => {
     const match = fileRegex.exec(output);
     const size = parseInt(match[1], 10);
     const name = match[2];
-    const ext = match[3];
 
     if (!cwd.files.has(name)) {
       cwd.files.set(name, {
         name,
         size,
-        ext,
       });
-
       recursivelyAddFileSize(cwd, size);
     }
 
@@ -141,9 +141,41 @@ const calcDeleteableStuff = (
   return total;
 };
 
+const getDirSizeToDelete = (
+  spaceNeeded: number,
+  candidateSize: number,
+  currentDirectory: Directory
+): number => {
+  let size = candidateSize;
+
+  if (
+    currentDirectory.fileSizeSum < candidateSize &&
+    currentDirectory.fileSizeSum >= spaceNeeded
+  ) {
+    size = currentDirectory.fileSizeSum;
+  }
+
+  currentDirectory.directories.forEach((dir) => {
+    size = getDirSizeToDelete(spaceNeeded, size, dir);
+  })
+
+  return size;
+};
+
+const getTotalSpaceNeeded = () => {
+  const totalSpace = 70000000;
+  const spaceNeeded = 30000000;
+  const unusedSpace = totalSpace - root.fileSizeSum;
+
+  return spaceNeeded - unusedSpace;
+};
+
 const main = () => {
+  // console.log(calcDeleteableStuff(100000, root)); part 1
   handleTerminalInputs();
-  console.log(calcDeleteableStuff(100000, root));
+  console.log(
+    getDirSizeToDelete(getTotalSpaceNeeded(), root.fileSizeSum, root)
+  );
 };
 
 main();
